@@ -1,0 +1,14 @@
+
+*{
+    font-family: Microsoft JhengHei;
+}
+
+:root {
+    --cardheight: 30px;
+  }
+
+body{
+    margin: 0; 
+    padding: 0; 
+    width: 568px;
+}
