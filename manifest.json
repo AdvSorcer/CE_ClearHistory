@@ -2,7 +2,9 @@
   "name": "時光回朔機",
   "version": "1.0",
   "description": "時光回朔",
-  "permissions": [],
+  "permissions": [
+    "history"
+  ],
   "background": {
     "scripts": ["background.js"],
     "persistent": false

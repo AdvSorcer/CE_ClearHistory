@@ -10,5 +10,44 @@
 body{
     margin: 0; 
     padding: 0; 
-    width: 568px;
+    width: 440px;
+    background-color:#D4D4D4	;
+}
+
+.card{
+    width: auto;
+    height: 1.5em;
+    border: 1px solid #D4D4D4;
+    background-color: rgb(245, 239, 239);
+    color: #A6A6A6	;
+    overflow : hidden;
+}
+.card a{
+    text-decoration: none;
+    color: rgb(82, 166, 187)		;
+}
+.card:hover{
+    background-color: rgb(238, 218, 218);
+}
+
+.head{
+    position: relative;
+    left: 10%;
+    top: 50%;
+    padding: 10px;
+}
+
+.head input[type="button"] {
+    font-size: 14px;
+    height: 30px;
+    width: 150px;
+    color: white;
+    border: none;
+    border-radius: 1px;
+    background-color: rgb(204, 146, 146);
+}
+
+.head input[type="button"]:hover{
+    background-color: rgb(196, 86, 86);
+    cursor: pointer;
 }
