@@ -74,14 +74,20 @@ let getYMD = (DateNumber) => {
     let date = dateObj.getDate();
     let hours = dateObj.getHours();
     let minutes = dateObj.getMinutes();
+    let strHours;
     let strMinutes;
+    if (hours < 10) {
+        strHours = "0" + hours.toString();
+    } else {
+        strHours = hours.toString();
+    }
     if (minutes < 10) {
         strMinutes = "0" + minutes.toString();
     } else {
         strMinutes = minutes.toString();
     }
     let seconds = dateObj.getSeconds();
-    let timeCombine = `${year}/${month}/${date} ${hours}:${strMinutes}`;
+    let timeCombine = `${year}/${month}/${date} ${strHours}:${strMinutes}`;
     return timeCombine;
 }
 
