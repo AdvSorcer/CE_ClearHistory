@@ -1,29 +1,17 @@
 'use strict';
 
 ///Parameter///
-let Minute10 = 1000 * 60 * 10;
-let oneHour = 1000 * 60 * 60;
-let microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
+let oneSecond = 1000 * 60 ;
+let Minute10 = oneSecond * 10;
+let oneHour = oneSecond * 60;
+let oneDay = oneSecond * 60 * 24;
+let microsecondsPerWeek = oneSecond * 60 * 24 * 7;
 let Minute10Ago = (new Date).getTime() - Minute10;
 let oneHourAgo = (new Date).getTime() - oneHour;
+let oneDayAgo = (new Date).getTime() - oneDay;
 let oneWeekAgo = (new Date).getTime() - microsecondsPerWeek;
 
 ///head///
-
-let Bind_DeleteHour = () => {
-    let btn_deletehour = document.getElementById("btn_deletehour");
-    btn_deletehour.addEventListener("click", () => {
-        let range = {
-            startTime: oneHourAgo,
-            endTime: (new Date).getTime()
-        }
-        chrome.history.deleteRange(range, function () {
-            Clear_OldData();
-            alert('刪除成功')
-            Div_ShowHistory("Url_List");
-        })
-    })
-}
 let Bind_Delete10Min = () => {
     let btn_deletehour = document.getElementById("btn_delete10");
     btn_deletehour.addEventListener("click", () => {
@@ -38,6 +26,30 @@ let Bind_Delete10Min = () => {
         })
     })
 }
+let Bind_DeleteHour = () => {
+    let btn_deletehour = document.getElementById("btn_deletehour");
+    btn_deletehour.addEventListener("click", () => {
+        let range = {
+            startTime: oneHourAgo,
+            endTime: (new Date).getTime()
+        }
+        chrome.history.deleteRange(range, function () {
+            Clear_OldData();
+            alert('刪除成功')
+            Div_ShowHistory("Url_List");
+        })
+    })
+}
+let Bind_DeleteAll = () => {
+    let btn_deletehour = document.getElementById("btn_deleteall");
+    btn_deletehour.addEventListener("click", () => {
+        chrome.history.deleteAll(()=>{
+            Clear_OldData();
+            alert('清除全部成功');
+            Div_ShowHistory("Url_List")
+        })
+    })
+}
 let Clear_OldData = () => {
     let RemoveTargets = document.getElementsByClassName('card');
     let count = RemoveTargets.length;
@@ -45,15 +57,16 @@ let Clear_OldData = () => {
         RemoveTargets[index].parentNode.removeChild(RemoveTargets[index])
     }
 }
+let Bind_Search = () => {
+    let txt_search = document.getElementById('txt_search')
+    txt_search.addEventListener('input', (e) => {
+        let input_value = txt_search.value;
+        Clear_OldData()
+        Div_ShowHistory('Url_List', input_value)
+    })
+}
 
 ///content///
-let query = {
-    "text": "",
-    "startTime": oneHourAgo
-    //"endTime": new Date().getTime(),
-    //"maxResults": 3
-};
-
 let getYMD = (DateNumber) => {
     let dateObj = new Date(DateNumber);
     let year = dateObj.getFullYear();
@@ -72,7 +85,22 @@ let getYMD = (DateNumber) => {
     return timeCombine;
 }
 
-function Div_ShowHistory(DivId) {
+function Div_ShowHistory(DivId, serchText) {
+
+    let query = {
+        "text": "",
+        "startTime": oneDayAgo
+        //"endTime": new Date().getTime(),
+        //"maxResults": 3
+    };
+
+    if (serchText !== '' && serchText !== undefined) {
+        query = {
+            "text": serchText,
+            "startTime": oneWeekAgo
+        };
+    }
+
     let targetDiv = document.getElementById(DivId);
 
     chrome.history.search(query, (histories) => {
@@ -98,6 +126,8 @@ document.addEventListener('DOMContentLoaded',
     function () {
         Bind_DeleteHour();
         Bind_Delete10Min();
+        Bind_DeleteAll();
+        Bind_Search();
         Div_ShowHistory("Url_List");
     }
 );
