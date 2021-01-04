@@ -13,11 +13,11 @@
 
 
 function createMenus() {
+    chrome.contextMenus.removeAll();
     var parent = chrome.contextMenus.create({
         id: "fast-url",
         "title": "快速連結",
         "contexts": ['all'],
-
     });
    
 
@@ -30,7 +30,7 @@ function createMenus() {
     chrome.history.search(query, (histories) => {
         histories.forEach(element => {
             let child = {
-                title: element.title,
+                title: element.title.substring(0, 20) ?? "empty",
                 id: element.id,
                 type: "normal",
                 contexts: ["all"],
@@ -40,14 +40,18 @@ function createMenus() {
         });
     })
 
-    chrome.contextMenus.onClicked.addListener(function (info, tab) {
+    chrome.contextMenus.onClicked.addListener(function (info) {
         chrome.history.search(query, (histories) => {
             let click = histories.filter( history => history.id == info.menuItemId);
             window.open(click[0].url);
         });
-
     });
 
 }
 
-createMenus();
+chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
+    if (changeInfo.status == 'complete') {
+        createMenus();
+    }
+  })
+
