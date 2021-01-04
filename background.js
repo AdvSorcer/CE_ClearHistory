@@ -30,7 +30,7 @@ function createMenus() {
     chrome.history.search(query, (histories) => {
         histories.forEach(element => {
             let child = {
-                title: element.title.substring(0, 20) ?? "empty",
+                title: element.title ?? "empty",
                 id: element.id,
                 type: "normal",
                 contexts: ["all"],
@@ -49,9 +49,5 @@ function createMenus() {
 
 }
 
-chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
-    if (changeInfo.status == 'complete') {
-        createMenus();
-    }
-  })
 
+createMenus();
