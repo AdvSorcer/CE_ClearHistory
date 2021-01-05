@@ -39,13 +39,12 @@ function urlClick(info) {
         let click = histories.filter(history => history.id == info.menuItemId);
         let targetUrl = click[0].url;
         window.open(targetUrl);
-        console.log(targetUrl)
     });
 }
-chrome.tabs.onCreated.addListener(createMenus)
-chrome.tabs.onRemoved.addListener(createMenus)
+chrome.tabs.onCreated.addListener(createMenus);
+chrome.tabs.onRemoved.addListener(createMenus);
 
-
+chrome.runtime.onSuspend.addListener(createMenus);
 
 
 
